@@ -1,0 +1,11 @@
+name: SimpleBounty
+version: '${project.version}'
+main: xyz.iscarter.simplebounty.SimpleBounty
+api-version: 1.19
+authors: [ IsCarter ]
+description: Allow players to set bountys on each other
+softdepend:
+  - "Vault"
+commands:
+  bounty:
+    description: Bounty Command
