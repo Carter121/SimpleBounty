@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.Events;
+package xyz.iscarter.simplebounty.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.commands;
+package xyz.iscarter.simplebounty.commands.bounty;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.iscarter.simplebounty.SimpleBounty;
 
 public class BountyCommand implements CommandExecutor {
     @Override
@@ -21,11 +20,11 @@ public class BountyCommand implements CommandExecutor {
                 Player p = (Player) sender;
 
                 if(args.length == 0) {
-                    p.sendMessage(ChatColor.YELLOW + "----------------_");
+                    p.sendMessage(ChatColor.YELLOW + "----------------");
                     p.sendMessage(ChatColor.RED + "/bounty set <player> <amount> " + ChatColor.YELLOW + "- Sets a bounty on a player");
                     p.sendMessage(ChatColor.RED + "/bounty list " + ChatColor.YELLOW + "- Lists all active bounties");
                     p.sendMessage(ChatColor.RED + "/bounty list self " + ChatColor.YELLOW + "- Displays the bounty on you (if there is one)");
-                    p.sendMessage(ChatColor.YELLOW + "----------------_");
+                    p.sendMessage(ChatColor.YELLOW + "----------------");
 
                     return true;
                 }

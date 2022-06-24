@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.commands;
+package xyz.iscarter.simplebounty.commands.bounty;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

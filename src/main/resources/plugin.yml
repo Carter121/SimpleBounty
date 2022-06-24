@@ -4,8 +4,12 @@ main: xyz.iscarter.simplebounty.SimpleBounty
 api-version: 1.19
 authors: [ IsCarter ]
 description: Allow players to set bountys on each other
-softdepend:
+depend:
   - "Vault"
+softdepend:
+  - PlaceholderAPI
 commands:
   bounty:
     description: Bounty Command
+  killpoint:
+    description: Kill Points Command

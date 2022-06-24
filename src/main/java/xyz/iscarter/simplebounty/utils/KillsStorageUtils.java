@@ -1,15 +1,13 @@
 package xyz.iscarter.simplebounty.utils;
 
 import com.google.gson.Gson;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import xyz.iscarter.simplebounty.SimpleBounty;
 import xyz.iscarter.simplebounty.models.Kill;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class KillsStorageUtils {
 
@@ -37,6 +35,34 @@ public class KillsStorageUtils {
             int amount = currentKills.getKills();
             deleteKills(uuid);
             Kill kill = new Kill(uuid, ++amount);
+            kills.add(kill);
+
+            return kill;
+        }
+    }
+
+    public static Kill subtractKill(String uuid) {
+
+        Kill currentKills = null;
+
+        for(Kill kill : kills) {
+            if(kill.getPlayerUUID().equals(uuid)) {
+                currentKills = kill;
+                break;
+            }
+        }
+
+        if(currentKills == null) {
+
+            int amount = 0;
+            Kill kill = new Kill(uuid, --amount);
+            kills.add(kill);
+
+            return kill;
+        } else {
+            int amount = currentKills.getKills();
+            deleteKills(uuid);
+            Kill kill = new Kill(uuid, --amount);
             kills.add(kill);
 
             return kill;
@@ -107,4 +133,12 @@ public class KillsStorageUtils {
             kills = new ArrayList<>(Arrays.asList(n));
         }
     }
+
+//    private static void setKillPlaceholder(String uuid, int kills) {
+//        Player p = Bukkit.getPlayer(UUID.fromString(uuid));
+//
+//        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+//            PlaceholderAPI.setPlaceholders(p, "")
+//        }
+//    }
 }

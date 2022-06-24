@@ -3,10 +3,11 @@ package xyz.iscarter.simplebounty;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.iscarter.simplebounty.Events.onPlayerJoinEvent;
-import xyz.iscarter.simplebounty.Events.onPlayerKillEvent;
-import xyz.iscarter.simplebounty.commands.BountyCommand;
-import xyz.iscarter.simplebounty.commands.BountyTabCompletion;
+import xyz.iscarter.simplebounty.commands.kill.KillpointsCommand;
+import xyz.iscarter.simplebounty.events.onPlayerJoinEvent;
+import xyz.iscarter.simplebounty.events.onPlayerKillEvent;
+import xyz.iscarter.simplebounty.commands.bounty.BountyCommand;
+import xyz.iscarter.simplebounty.commands.bounty.BountyTabCompletion;
 import xyz.iscarter.simplebounty.utils.BountiesStorageUtils;
 import xyz.iscarter.simplebounty.utils.KillsStorageUtils;
 
@@ -39,6 +40,8 @@ public final class SimpleBounty extends JavaPlugin {
 
         getCommand("bounty").setExecutor(new BountyCommand());
         getCommand("bounty").setTabCompleter(new BountyTabCompletion());
+
+        getCommand("killpoint").setExecutor(new KillpointsCommand());
 
         getServer().getPluginManager().registerEvents(new onPlayerKillEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);

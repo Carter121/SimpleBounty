@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.commands;
+package xyz.iscarter.simplebounty.commands.bounty;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

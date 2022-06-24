@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.commands;
+package xyz.iscarter.simplebounty.commands.bounty;
 
 
 import net.milkbowl.vault.economy.Economy;

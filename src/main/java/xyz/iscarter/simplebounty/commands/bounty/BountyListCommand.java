@@ -1,4 +1,4 @@
-package xyz.iscarter.simplebounty.commands;
+package xyz.iscarter.simplebounty.commands.bounty;
 
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class BountyListCommand {
+
+    private static int howManyPerPage = 5;
 
     public static boolean bountyList(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
             if(!(sender instanceof Player)) {
@@ -42,11 +44,6 @@ public class BountyListCommand {
 
                     int currentPage = Integer.parseInt(args[1]);
 
-                    int howManyPerPage = 5;
-
-
-                    displayBounties(currentPage * 5 - 4, currentPage * 5, bounties, p, currentPage, maxPages);
-
 
                     if(currentPage > maxPages) {
                         p.sendMessage(ChatColor.RED + "Error: That page does not exist");
@@ -55,12 +52,12 @@ public class BountyListCommand {
 
 
                     if(bounties.size() == 0) {
-
                         p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[BOUNTY] " + ChatColor.GREEN + "There are no active bounties :)");
-
                         return true;
-
                     }
+
+
+                    displayBounties(currentPage * 5 - 4, currentPage * 5, bounties, p, currentPage, maxPages);
 
                     return true;
 
@@ -106,6 +103,19 @@ public class BountyListCommand {
 
                 ArrayList<Bounty> bounties = BountiesStorageUtils.getAllBounties();
 
+                int maxPages = (bounties.size() / 5);
+                maxPages++;
+
+
+                int currentPage = 1;
+
+
+                if(currentPage > maxPages) {
+                    p.sendMessage(ChatColor.RED + "Error: That page does not exist");
+                    return false;
+                }
+
+
                 if(bounties.size() == 0) {
 
                     p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[BOUNTY] " + ChatColor.GREEN + "There are no active bounties :)");
@@ -114,13 +124,9 @@ public class BountyListCommand {
 
                 }
 
-                for (int i = 0; i < bounties.size(); i++) {
 
-                    String player = bounties.get(i).getPlayerName();
-                    Double amount = bounties.get(i).getAmount();
+            displayBounties(currentPage * 5 - 4, currentPage * 5, bounties, p, currentPage, maxPages);
 
-                    p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[BOUNTY] " + ChatColor.YELLOW + player + ChatColor.RED + " FOR " + ChatColor.YELLOW + "$" + amount);
-                }
                 return true;
 
             }
