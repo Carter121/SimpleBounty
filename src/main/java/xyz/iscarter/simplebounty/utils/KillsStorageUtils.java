@@ -55,7 +55,7 @@ public class KillsStorageUtils {
         if(currentKills == null) {
 
             int amount = 0;
-            Kill kill = new Kill(uuid, --amount);
+            Kill kill = new Kill(uuid, -1);
             kills.add(kill);
 
             return kill;

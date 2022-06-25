@@ -15,6 +15,7 @@ import java.util.TimerTask;
 
 public class BountiesStorageUtils {
 
+    private static ArrayList<String> playersInCooldown = new ArrayList<>();
     private static ArrayList<Bounty> bounties = new ArrayList<>();
 
     public static Bounty createBounty(String uuid, Double amount, String displayName) {
@@ -88,5 +89,39 @@ public class BountiesStorageUtils {
             Bounty[] n = gson.fromJson(reader, Bounty[].class);
             bounties = new ArrayList<>(Arrays.asList(n));
         }
+    }
+
+    public static ArrayList<String> getPlayersInCooldown() {
+        return playersInCooldown;
+    }
+
+    public static void addPlayerToCooldown(String name) {
+        playersInCooldown.add(name);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                for(int i = 0; i < playersInCooldown.size(); i++) {
+
+                    if(playersInCooldown.get(i).equals(name)) {
+
+                        playersInCooldown.remove(i);
+                        return;
+                    }
+
+                }
+
+            }
+        }, 0, SimpleBounty.getPlugin().getConfig().getInt("bounty_cooldown"));
+    }
+
+    public static void clearPlayerCooldown() {
+
+        playersInCooldown.forEach(p -> {
+            playersInCooldown.remove(p);
+        });
+
     }
 }

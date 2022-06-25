@@ -45,7 +45,7 @@ public class BountyListCommand {
                     int currentPage = Integer.parseInt(args[1]);
 
 
-                    if(currentPage > maxPages) {
+                    if(currentPage > maxPages || currentPage < 1) {
                         p.sendMessage(ChatColor.RED + "Error: That page does not exist");
                         return false;
                     }

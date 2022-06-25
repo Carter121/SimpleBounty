@@ -12,12 +12,19 @@ import org.jetbrains.annotations.NotNull;
 import xyz.iscarter.simplebounty.SimpleBounty;
 import xyz.iscarter.simplebounty.models.Bounty;
 import xyz.iscarter.simplebounty.utils.BountiesStorageUtils;
+import xyz.iscarter.simplebounty.utils.KillsStorageUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class BountySetCommand {
     private static DecimalFormat df = new DecimalFormat("#.##");
+
+    private static boolean canSetOwnPrice = SimpleBounty.getPlugin().getConfig().getBoolean("allow_custom_bounty_amount");
+    private static double pricePerKillPoint = SimpleBounty.getPlugin().getConfig().getDouble("amount_per_kill_point");
+
+    private static int killPoints = 0;
+
 
 
     public static boolean bountySet(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
@@ -30,6 +37,24 @@ public class BountySetCommand {
                 return false;
             }
 
+            ArrayList<String> cooldownPlayers = BountiesStorageUtils.getPlayersInCooldown();
+
+            for(int i = 0; i < cooldownPlayers.size(); i++) {
+
+                if(cooldownPlayers.get(i).equals(sender.getName())) {
+                    int cooldownTime = SimpleBounty.getPlugin().getConfig().getInt("bounty_cooldown");
+
+                    if(cooldownTime >= 60000) {
+                        int mins = cooldownTime / 60;
+                        int secs = cooldownTime % 60;
+
+                        sender.sendMessage(ChatColor.RED + "Error: You must wait " + ChatColor.YELLOW + mins + ChatColor.RED + " minuets and " + ChatColor.YELLOW + secs + ChatColor.RED + " seconds");
+                    }
+
+                }
+
+            }
+
             if(args.length >= 2) {
                 Player p = (Player) sender;
 
@@ -38,7 +63,22 @@ public class BountySetCommand {
                 Player target = Bukkit.getPlayer(targetName);
 
 
-                Double amount = Double.parseDouble(args[1]);
+                Double amount = null;
+                if(canSetOwnPrice) {
+                    amount = Double.parseDouble(args[1]);
+                } else {
+                    try {
+                    killPoints = KillsStorageUtils.getKills(target.getUniqueId().toString()).getKills();
+                    } catch (Exception e) {
+                        killPoints = 0;
+                    }
+
+                    if(killPoints <= 0) {
+                        amount = pricePerKillPoint;
+                    } else {
+                        amount = pricePerKillPoint * killPoints;
+                    }
+                }
 
                 amount = Double.parseDouble(df.format(amount));
 
@@ -84,8 +124,14 @@ public class BountySetCommand {
                 }
 
             } else {
-                sender.sendMessage(ChatColor.RED + "Error: You must specify a name and an amount");
-                sender.sendMessage(ChatColor.RED + "Example: /bounty set Notch 123");
+                if(canSetOwnPrice) {
+                    sender.sendMessage(ChatColor.RED + "Error: You must specify a name and an amount");
+                    sender.sendMessage(ChatColor.RED + "Example: /bounty set Notch 123");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Error: You must specify a name");
+                    sender.sendMessage(ChatColor.RED + "Example: /bounty set Notch");
+                }
+                return false;
             }
 
         return false;

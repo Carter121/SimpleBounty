@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import xyz.iscarter.simplebounty.models.Kill;
 import xyz.iscarter.simplebounty.utils.KillsStorageUtils;
 
+import java.util.UUID;
+
 public class KillpointsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -36,13 +38,14 @@ public class KillpointsCommand implements CommandExecutor {
                 Kill kills = KillsStorageUtils.getKills(target.getUniqueId().toString());
 
                 int targetKills = 0;
+
                 try {
                     targetKills = kills.getKills();
                 } catch (Exception e) {
                     targetKills = 0;
                 }
 
-                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[KILL POINTS] " + ChatColor.YELLOW + p.getName() + ChatColor.RED + " has " + ChatColor.YELLOW + targetKills + ChatColor.RED + " kills");
+                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[KILL POINTS] " + ChatColor.YELLOW + args[0] + ChatColor.RED + " has " + ChatColor.YELLOW + targetKills + ChatColor.RED + " kills");
 
                 return true;
 

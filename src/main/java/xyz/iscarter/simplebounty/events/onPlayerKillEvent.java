@@ -15,12 +15,15 @@ public class onPlayerKillEvent implements Listener {
 
         Entity killer = p.getKiller();
 
+
         if(killer instanceof Player) {
             Player killerPlayer = ((Player) killer).getPlayer();
             KillsStorageUtils.addKill(killer.getUniqueId().toString());
         }
 
         if(getPlayerKills(p) != null) {
+            KillsStorageUtils.subtractKill(p.getUniqueId().toString());
+        } else {
             KillsStorageUtils.subtractKill(p.getUniqueId().toString());
         }
 

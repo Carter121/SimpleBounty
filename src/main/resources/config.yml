@@ -1,8 +1,19 @@
+#-----------------
 # Made by IsCarter
-
+#-----------------
 
 # How many minutes between saving files
 time_between_saves: 1
 
+# Bounty Cooldown Time (ms. 1000ms = 1s. default is 5min (300000ms))
+bounty_cooldown: 300000
+
 # Min bounty amount
 min_bounty_amount: 1000
+
+# Allow custom bounty amount
+allow_custom_bounty_amount: false
+
+# Amount per kill point (only if the option above is true)
+# Ex: If amount per kill point = 1000 then 5 kill points on the target = $5000 bounty
+amount_per_kill_point: 1000.0

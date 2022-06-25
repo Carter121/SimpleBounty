@@ -38,6 +38,9 @@ public final class SimpleBounty extends JavaPlugin {
 
         plugin = this;
 
+        // Clear player cooldowns
+        BountiesStorageUtils.clearPlayerCooldown();
+
         getCommand("bounty").setExecutor(new BountyCommand());
         getCommand("bounty").setTabCompleter(new BountyTabCompletion());
 
@@ -78,6 +81,9 @@ public final class SimpleBounty extends JavaPlugin {
             throw new RuntimeException(e);
         }
         KillsStorageUtils.timer.cancel();
+
+        // Clear player cooldowns
+        BountiesStorageUtils.clearPlayerCooldown();
     }
 
 
