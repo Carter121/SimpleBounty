@@ -60,7 +60,9 @@ public class BountiesStorageUtils {
         writer.flush();
         writer.close();
 
-        SimpleBounty.getPlugin().getLogger().info("Bounties Saved");
+        if(SimpleBounty.getPlugin().getConfig().getBoolean("display_save_messages")) {
+            SimpleBounty.getPlugin().getLogger().info("Bounties Saved");
+        }
 
     }
 

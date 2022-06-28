@@ -103,7 +103,9 @@ public class KillsStorageUtils {
         writer.flush();
         writer.close();
 
-        SimpleBounty.getPlugin().getLogger().info("Kills Saved");
+        if(SimpleBounty.getPlugin().getConfig().getBoolean("display_save_messages")) {
+            SimpleBounty.getPlugin().getLogger().info("Kills Saved");
+        }
 
     }
 

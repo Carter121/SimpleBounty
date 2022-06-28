@@ -2,6 +2,9 @@
 # Made by IsCarter
 #-----------------
 
+# Display save messages
+display_save_messages: true
+
 # How many minutes between saving files
 time_between_saves: 1
 
