@@ -1,8 +1,6 @@
 package xyz.iscarter.simplebounty.utils;
 
 import com.google.gson.Gson;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import xyz.iscarter.simplebounty.SimpleBounty;
 import xyz.iscarter.simplebounty.models.Kill;
 
@@ -41,6 +39,16 @@ public class KillsStorageUtils {
         }
     }
 
+    public static Kill setKill(String uuid, int amount) {
+
+        deleteKills(uuid);
+
+        Kill kill = new Kill(uuid, amount);
+        kills.add(kill);
+        return kill;
+
+    }
+
     public static Kill subtractKill(String uuid) {
 
         Kill currentKills = null;
@@ -55,17 +63,29 @@ public class KillsStorageUtils {
         if(currentKills == null) {
 
             int amount = 0;
-            Kill kill = new Kill(uuid, -1);
+            Kill kill = new Kill(uuid, 0);
             kills.add(kill);
 
             return kill;
         } else {
             int amount = currentKills.getKills();
-            deleteKills(uuid);
-            Kill kill = new Kill(uuid, --amount);
-            kills.add(kill);
 
-            return kill;
+            if(amount != 0) {
+
+                double percentage = SimpleBounty.getPlugin().getConfig().getInt("kill_point_percent");
+
+                double percentage2 = percentage / 100;
+
+                amount = (int) Math.floor(amount - (amount * percentage2));
+
+                deleteKills(uuid);
+                Kill kill = new Kill(uuid, amount);
+                kills.add(kill);
+
+
+                return kill;
+            }
+            return null;
         }
     }
 
@@ -136,11 +156,11 @@ public class KillsStorageUtils {
         }
     }
 
-//    private static void setKillPlaceholder(String uuid, int kills) {
-//        Player p = Bukkit.getPlayer(UUID.fromString(uuid));
-//
-//        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-//            PlaceholderAPI.setPlaceholders(p, "")
-//        }
-//    }
+    public static ArrayList<Kill> sort() {
+
+        kills.sort(Comparator.comparing(Kill::getKills));
+
+        return kills;
+
+    }
 }

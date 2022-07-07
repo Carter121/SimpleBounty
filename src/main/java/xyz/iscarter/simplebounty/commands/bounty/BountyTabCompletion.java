@@ -17,7 +17,6 @@ public class BountyTabCompletion implements TabCompleter {
         if(args.length == 1) {
 
             List<String> possibleCommands = new ArrayList<>();
-            possibleCommands.add("set");
             possibleCommands.add("list");
 
             return possibleCommands;
@@ -29,16 +28,6 @@ public class BountyTabCompletion implements TabCompleter {
                 possibleCommands.add("self");
 
                 return possibleCommands;
-            }
-        } else if(args.length == 3) {
-
-            if(args[0].equals("set")) {
-
-                List<String> possibleCommands = new ArrayList<>();
-                possibleCommands.add("<amount>");
-
-                return  possibleCommands;
-
             }
         }
 

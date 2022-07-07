@@ -1,5 +1,6 @@
 package xyz.iscarter.simplebounty.commands.kill;
 
+import it.unimi.dsi.fastutil.ints.IntImmutableList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,7 +46,26 @@ public class KillpointsCommand implements CommandExecutor {
                     targetKills = 0;
                 }
 
-                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[KILL POINTS] " + ChatColor.YELLOW + args[0] + ChatColor.RED + " has " + ChatColor.YELLOW + targetKills + ChatColor.RED + " kills");
+                p.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[KILL POINTS] " + ChatColor.YELLOW + args[0] + ChatColor.RED + " has " + ChatColor.YELLOW + targetKills + ChatColor.RED + " kill points");
+
+                return true;
+
+            } else if (args[0].equals("set") && isPlayer(args[1]) && isInt(args[2])) {
+
+                if(!sender.hasPermission("simplebounty.command.killpoint.set")) {
+                    sender.sendMessage(ChatColor.RED + "Error: No Permission");
+                    return false;
+                }
+
+                Player target = Bukkit.getPlayer(args[1]);
+
+                String targetUUID = target.getUniqueId().toString();
+
+                KillsStorageUtils.deleteKills(targetUUID);
+
+                int newKills = Integer.parseInt(args[2]);
+
+                KillsStorageUtils.setKill(targetUUID, newKills);
 
                 return true;
 
@@ -66,11 +86,27 @@ public class KillpointsCommand implements CommandExecutor {
 
     private boolean isPlayer(String name) {
 
-        try {
-            Player p = Bukkit.getPlayer(name);
-            return true;
-        } catch (Exception e) {
+        Player p = Bukkit.getPlayer(name);
+
+        if(p == null) {
             return false;
+        }
+
+        return true;
+
+    }
+
+    private boolean isInt(String num) {
+
+        try {
+
+            Integer.parseInt(num);
+            return true;
+
+        } catch (NumberFormatException e) {
+
+            return false;
+
         }
 
     }

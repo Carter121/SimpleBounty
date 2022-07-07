@@ -8,15 +8,25 @@ display_save_messages: true
 # How many minutes between saving files
 time_between_saves: 1
 
-# Bounty Cooldown Time (ms. 1000ms = 1s. default is 5min (300000ms))
-bounty_cooldown: 300000
-
 # Min bounty amount
 min_bounty_amount: 1000
-
-# Allow custom bounty amount
-allow_custom_bounty_amount: false
 
 # Amount per kill point (only if the option above is true)
 # Ex: If amount per kill point = 1000 then 5 kill points on the target = $5000 bounty
 amount_per_kill_point: 1000.0
+
+# What percent of kill points do you lose when you die
+kill_point_percent: 5
+
+# How long should a player be banned for
+# (EX: 1d (1 day), 1h (1 hour) 1m (1 minuet) 1mo (1 month)
+player_ban_time: 1h
+
+# How many bounties can a player claim on someone before they get banned
+kill_amount: 4
+
+# Time range for ban (minutes)
+ban_time_range: 5
+
+# Ban reason
+ban_reason: Spawn Killing

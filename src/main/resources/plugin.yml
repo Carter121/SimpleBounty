@@ -13,3 +13,5 @@ commands:
     description: Bounty Command
   killpoint:
     description: Kill Points Command
+  streak:
+    description: hi

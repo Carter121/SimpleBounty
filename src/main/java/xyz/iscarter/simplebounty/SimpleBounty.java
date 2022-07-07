@@ -1,14 +1,18 @@
 package xyz.iscarter.simplebounty;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.iscarter.simplebounty.commands.kill.KillpointsCommand;
+import xyz.iscarter.simplebounty.commands.killStreak.KillStreakCommand;
 import xyz.iscarter.simplebounty.events.onPlayerJoinEvent;
 import xyz.iscarter.simplebounty.events.onPlayerKillEvent;
 import xyz.iscarter.simplebounty.commands.bounty.BountyCommand;
 import xyz.iscarter.simplebounty.commands.bounty.BountyTabCompletion;
+import xyz.iscarter.simplebounty.placeholders.PlaceholderExpansion;
 import xyz.iscarter.simplebounty.utils.BountiesStorageUtils;
+import xyz.iscarter.simplebounty.utils.KillStreakStorageUtils;
 import xyz.iscarter.simplebounty.utils.KillsStorageUtils;
 
 import java.io.FileNotFoundException;
@@ -38,13 +42,13 @@ public final class SimpleBounty extends JavaPlugin {
 
         plugin = this;
 
-        // Clear player cooldowns
-        BountiesStorageUtils.clearPlayerCooldown();
 
         getCommand("bounty").setExecutor(new BountyCommand());
         getCommand("bounty").setTabCompleter(new BountyTabCompletion());
 
         getCommand("killpoint").setExecutor(new KillpointsCommand());
+
+        getCommand("streak").setExecutor(new KillStreakCommand());
 
         getServer().getPluginManager().registerEvents(new onPlayerKillEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
@@ -64,6 +68,18 @@ public final class SimpleBounty extends JavaPlugin {
         }
         KillsStorageUtils.saveAutomatically();
 
+        try {
+            KillStreakStorageUtils.loadStreaks();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        KillStreakStorageUtils.saveAutomatically();
+
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderExpansion(this).register();
+        }
+
     }
 
     @Override
@@ -82,8 +98,12 @@ public final class SimpleBounty extends JavaPlugin {
         }
         KillsStorageUtils.timer.cancel();
 
-        // Clear player cooldowns
-        BountiesStorageUtils.clearPlayerCooldown();
+        try {
+            KillStreakStorageUtils.saveStreaks();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        KillStreakStorageUtils.timer.cancel();
     }
 
 

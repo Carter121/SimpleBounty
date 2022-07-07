@@ -10,8 +10,6 @@ import xyz.iscarter.simplebounty.SimpleBounty;
 
 public class BountyCommand implements CommandExecutor {
 
-    boolean canSetOwnPrice = SimpleBounty.getPlugin().getConfig().getBoolean("allow_custom_bounty_amount");
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(command.getName().equals("bounty")) {
@@ -25,22 +23,10 @@ public class BountyCommand implements CommandExecutor {
 
                 if(args.length == 0) {
                     p.sendMessage(ChatColor.YELLOW + "----------------");
-
-                    if(canSetOwnPrice) {
-                        p.sendMessage(ChatColor.RED + "/bounty set <player> <amount> " + ChatColor.YELLOW + "- Sets a bounty on a player");
-                    } else {
-                        p.sendMessage(ChatColor.RED + "/bounty set <player> " + ChatColor.YELLOW + "- Sets a bounty on a player");
-                    }
                     p.sendMessage(ChatColor.RED + "/bounty list " + ChatColor.YELLOW + "- Lists all active bounties");
                     p.sendMessage(ChatColor.RED + "/bounty list self " + ChatColor.YELLOW + "- Displays the bounty on you (if there is one)");
                     p.sendMessage(ChatColor.YELLOW + "----------------");
 
-                    return true;
-                }
-
-                if(args[0].equals("set") && !canSetOwnPrice) {
-                    String[] listArgs = {args[1], null};
-                    BountySetCommand.bountySet(sender, command, listArgs);
                     return true;
                 }
 
@@ -69,28 +55,6 @@ public class BountyCommand implements CommandExecutor {
                         String[] listArgs = {"list", args[1]};
                         BountyListCommand.bountyList(sender, command, listArgs);
                         return true;
-
-                    } else if (args[0].equals("set")) {
-
-                        if(args.length >= 3) {
-
-                           if(canBeDouble(args[2])) {
-
-                               String[] listArgs = {args[1], args[2]};
-
-                               BountySetCommand.bountySet(sender, command, listArgs);
-
-                               return true;
-                           } else {
-                               setCommandWrong(p);
-                               return false;
-                           }
-
-                        } else {
-                            setCommandWrong(p);
-                            return false;
-                        }
-
 
                     } else if (args[0].equals("delete")) {
 
