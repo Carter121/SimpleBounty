@@ -99,7 +99,7 @@ public class KillsStorageUtils {
                 return kill;
             }
         }
-        return null;
+        return new Kill(uuid, 0);
     }
 
     public static void deleteKills(String uuid) {

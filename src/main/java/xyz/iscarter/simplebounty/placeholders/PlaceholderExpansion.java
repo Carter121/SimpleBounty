@@ -45,6 +45,14 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
 
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
+        if(params.equalsIgnoreCase("killpoints")) {
+
+            Kill kill = KillsStorageUtils.getKills(player.getUniqueId().toString());
+
+            return String.valueOf(kill.getKills());
+
+        }
+
         if(params.equalsIgnoreCase("killstreak")) {
 
             KillStreak streak = KillStreakStorageUtils.getStreak(player.getUniqueId());

@@ -1,6 +1,10 @@
 package xyz.iscarter.simplebounty.utils;
 
 import com.google.gson.Gson;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import xyz.iscarter.simplebounty.SimpleBounty;
 import xyz.iscarter.simplebounty.models.KillStreak;
 
@@ -35,6 +39,8 @@ public class KillStreakStorageUtils {
 
                 streaks.add(newStreak);
 
+                checkKillStreakRewards(playerUUID, newStreak);
+
                 return newStreak;
 
             }
@@ -43,6 +49,45 @@ public class KillStreakStorageUtils {
 
         KillStreak newStreak = new KillStreak(1, playerUUID, 1);
         streaks.add(newStreak);
+
+        checkKillStreakRewards(playerUUID, newStreak);
+
+        return newStreak;
+
+    }
+
+    public static KillStreak setStreak(UUID playerUUID, int amount) {
+
+        for(KillStreak streak: streaks) {
+
+            if(streak.getPlayerUUID().toString().equalsIgnoreCase(playerUUID.toString())) {
+
+                KillStreak oldStreak = streak;
+                streaks.remove(oldStreak);
+
+                KillStreak newStreak;
+
+                if(amount <= oldStreak.getMaxStreak()) {
+                    newStreak = new KillStreak(amount, oldStreak.getPlayerUUID(), oldStreak.getMaxStreak());
+                } else {
+                    newStreak = new KillStreak(amount, oldStreak.getPlayerUUID(), amount);
+                }
+
+
+                streaks.add(newStreak);
+
+                checkKillStreakRewards(playerUUID, newStreak);
+
+                return newStreak;
+
+            }
+
+        }
+
+        KillStreak newStreak = new KillStreak(amount, playerUUID, amount);
+        streaks.add(newStreak);
+
+        checkKillStreakRewards(playerUUID, newStreak);
 
         return newStreak;
 
@@ -157,5 +202,31 @@ public class KillStreakStorageUtils {
         }
     }
 
+    private static void checkKillStreakRewards(UUID playerUUID, KillStreak killStreak) {
+
+        Player p = Bukkit.getPlayer(playerUUID);
+
+        ConfigurationSection rewards = SimpleBounty.getPlugin().getConfig().getConfigurationSection("rewards");
+
+        rewards.getKeys(false).forEach(key -> {
+
+            int streakNum = SimpleBounty.getPlugin().getConfig().getInt("rewards." + key + ".streak_num");
+
+            if(killStreak.getStreak() == streakNum) {
+                List<String> commands = SimpleBounty.getPlugin().getConfig().getStringList("rewards." + key + ".commands");
+
+                commands.forEach(command -> {
+
+                    assert command != null;
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(p, command));
+
+                });
+
+
+            }
+
+        });
+
+    }
 
 }

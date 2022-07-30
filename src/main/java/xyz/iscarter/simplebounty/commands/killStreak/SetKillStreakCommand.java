@@ -7,9 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.iscarter.simplebounty.utils.KillStreakStorageUtils;
 import xyz.iscarter.simplebounty.utils.SamePlayerKillStreakUtils;
 
-public class KillStreakCommand implements CommandExecutor {
+public class SetKillStreakCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -17,7 +18,7 @@ public class KillStreakCommand implements CommandExecutor {
             sender.sendMessage("Error: You must be a player to run this");
         }
 
-        if(!sender.hasPermission("simplebounty.command.streak")) {
+        if(!sender.hasPermission("simplebounty.command.streak.set")) {
             sender.sendMessage(ChatColor.RED + "Error: You do not have permission");
         }
 
@@ -25,9 +26,9 @@ public class KillStreakCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
 
-        int streak = SamePlayerKillStreakUtils.getKill(p.getUniqueId().toString(), target.getUniqueId().toString()).getKillsInTime();
+        int newStreak = Integer.parseInt(args[1]);
 
-        p.sendMessage(String.valueOf(streak));
+        KillStreakStorageUtils.setStreak(target.getUniqueId(), newStreak);
 
         return false;
     }

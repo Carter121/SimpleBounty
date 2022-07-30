@@ -1,6 +1,9 @@
 package xyz.iscarter.simplebounty.events;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,11 +41,12 @@ public class onPlayerKillEvent implements Listener {
             Player killerPlayer = ((Player) killer).getPlayer();
             KillsStorageUtils.addKill(killer.getUniqueId().toString());
 
-            KillStreakStorageUtils.addOneToStreak(killerPlayer.getUniqueId());
+            KillStreak killStreak = KillStreakStorageUtils.addOneToStreak(killerPlayer.getUniqueId());
 
             getKillerBounty(killerPlayer);
 
             SamePlayerKillStreakUtils.addKill(killer.getUniqueId().toString(), p.getUniqueId().toString());
+
 
             if(playerBounty != null) {
                 Economy econ = SimpleBounty.getEconomy();

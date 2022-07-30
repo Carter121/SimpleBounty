@@ -6,6 +6,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.iscarter.simplebounty.commands.kill.KillpointsCommand;
 import xyz.iscarter.simplebounty.commands.killStreak.KillStreakCommand;
+import xyz.iscarter.simplebounty.commands.killStreak.SetKillStreakCommand;
 import xyz.iscarter.simplebounty.events.onPlayerJoinEvent;
 import xyz.iscarter.simplebounty.events.onPlayerKillEvent;
 import xyz.iscarter.simplebounty.commands.bounty.BountyCommand;
@@ -49,6 +50,8 @@ public final class SimpleBounty extends JavaPlugin {
         getCommand("killpoint").setExecutor(new KillpointsCommand());
 
         getCommand("streak").setExecutor(new KillStreakCommand());
+
+        getCommand("setstreak").setExecutor(new SetKillStreakCommand());
 
         getServer().getPluginManager().registerEvents(new onPlayerKillEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);

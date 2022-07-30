@@ -3,7 +3,7 @@
 #-----------------
 
 # Display save messages
-display_save_messages: true
+display_save_messages: false
 
 # How many minutes between saving files
 time_between_saves: 1
@@ -30,3 +30,16 @@ ban_time_range: 5
 
 # Ban reason
 ban_reason: Spawn Killing
+
+# Kill streak rewards
+rewards:
+  give_1k:
+    streak_num: 10
+    commands:
+      - 'tellraw %player_name% {"text": "§bCongratulations %player_name%, you just got $1,000 for getting a kill streak of 10!"}'
+      - 'cmi money give %player_name% 1000'
+  give_2k:
+    streak_num: 20
+    commands:
+      - 'tellraw %player_name% {"text": "§bCongratulations %player_name%, you just got $2,000 for getting a kill streak of 20!"}'
+      - 'cmi money give %player_name% 2000'
